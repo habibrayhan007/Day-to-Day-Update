@@ -1,0 +1,29 @@
+http- build up Communication between browser and web server. It followes client server model.
+
+
+basic feature- 
+Connectionless - example: when we send a request to the server using browser then server send response to the browser. After send that response the connection between browser and server will lost. If we need more then we have to send request againg.
+
+Media Independent - We can send and receive any media file 
+
+Stateless - Same as Connectionless. loose all the information after send the response.
+
+For remembering HTTP send a hidden variable or cookies wehn server response happen. Using cookies or hidden variable a server can remember a request.
+
+http Request Method-
+GET- For getting the data which haa been saved on the server.
+POST- For submiting the data to the server. example: password, form submit
+PUT- For updating the data which is already on the server. example: Form update
+Delete- For delete the data from server
+
+HTTP Status Code-
+100 - Request received and continuing processing
+200 - Request successfully received and understood and accepted the request
+302 - Redirection - Further action to be tacken. For enterring the exact address they want to check other thing so they redirect us to another address
+404 - Client error - When a request can't reach to the server then this error will occure.
+500 - Server Error - After received a valid request if server failed to response then this error will occure.
+
+HTTPS - last char S stands for Secure. It is the encrypted version of HTTP. It use SSl or TLS to encrypted
+
+
+HTTP Query Method- This is new method. Can't find any resource on the Internet.
