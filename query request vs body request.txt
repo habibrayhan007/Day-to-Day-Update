@@ -1,0 +1,78 @@
+Body request is the actual body of the request and Query request is any query oe searching parameter from users. 
+
+Query Request -
+req.query is a request object populated by the request query string found in a URL. These query strings are in key-value form. Any URL starts after a question mark. And if there are more than one, they are separated with an ampersand.
+
+https://debugg.com/user?name=Theodore&isAuthor=true
+
+From the above code, the query strings are "name" and "isAuthor". When this request is made, the req.query object becomes populated with the query strings.
+
+req.query = {name: "Theodore", isAuthor: true}
+
+
+How to use expressJs
+1. Create an application and start the server.
+	var express = require('express');
+	var app = express();
+
+	const PORT = 3000;
+
+
+	app.listen(PORT, ()=>{
+  		console.log("app running on port "+PORT);
+	})
+
+2. Set up the route for our request.
+	app.get("/user", (req, res)=>{
+  	var name = req.query.name;
+  	var isAuthor = req.query.isAuthor;
+  	res.json({
+    		name,isAuthor
+  	})
+	})
+
+3. Open your browser and request the route /user?   name=Theodore&isAuthor=true".
+   This will return a JSON object with the following result.
+	{
+   		"name": "Theodore",
+   		"isAuthor": "true"
+	}
+
+Body request -
+The req. body object allows you to access data in a string or JSON object from the client side. You generally use the req. body object to receive data through POST and PUT requests in the Express server. It will remain undefined by default and to make things work you need to take some help from middleware like express.json(), express.urlencoded().
+
+const express = require('express')
+const app = express()
+
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+
+app.post('/student-info',(req,res) => {
+    let data = req.body
+
+    console.log('Name : ', data.name)
+    console.log('Subject : ', data.subject)
+
+    res.send()
+})
+
+const PORT = 8000
+app.listen(PORT,()=>{
+    console.log(`App is running on Port ${PORT}`)
+})
+
+Here, we simply require the express and then store it into the app. After that, we use some middleware that we have mentioned in the earlier section so that our req.body object can work properly. We make a post request and we will catch the data from the client-side and print it in the console, finally, we create our server that is running on port 8000.
+
+Output
+
+In the postman, we have given this information of a student.
+
+{
+    "name" : "Habib",
+    "subject" : "CSE"
+}
+
+Console Output: 
+	App is running on Port 8000
+	Name : Habib
+	Subject : CSE
