@@ -1,0 +1,17 @@
+authentication - 
+It’s a way of encrypting a value, in turn creating a unique token that users use as an identifier. This token verifies your identity. It can authenticate who you are, and authorize various resources you have access to.
+
+There are rwo type authentication -
+1.Session Based
+	Everytime for new user have to create new session, generate 		id and have to store session releted data inside database 	which is very hassle.
+
+	* Cookies & Session
+	* Passsport with local strategy
+	* Passport with google oauth-20
+
+What is Token Based Authentication in Web API?
+ 
+Token-based authentication is a process where the client application first sends a request to Authentication server with a valid credentials. The Authentication server sends an Access token to the client as a response. This token contains enough data to identify a particular user and it has an expiry time. The client application then uses the token to access the restricted resources in the next requests until the token is valid. If the Access token is expired, then the client application can request for a new access token by using Refresh token.
+
+CORS -
+Cross-origin resource sharing (CORS) is a mechanism that allows restricted resources on a web page to be requested from another domain outside the domain from which the first resource was served. A web page may freely embed cross-origin images, stylesheets, scripts, iframes, and videos.
