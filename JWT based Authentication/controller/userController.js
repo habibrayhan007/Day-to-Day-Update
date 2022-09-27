@@ -18,7 +18,7 @@ module.exports = {
 
 
         //password repeate must match
-        if(!req.body.password_repeate || req.body.password != req.body.password_repeate){
+        if(!req.body.password_repeat || req.body.password != req.body.password_repeat){
             return res.status(400).send({
                 message: 'Password must be same'
             });
@@ -29,12 +29,12 @@ module.exports = {
         if(!req.headers.authorization){
             return res.status(400).json({
                 message: "Your session is not valid!"
-            })
+            });
         }
         try{
             const authHeader = req.headers.authorization;
             const token = authHeader.split(" ")[1];
-            const decoder = jwt.verify(token, "SECRETKEY");
+            const decoded = jwt.verify(token, "SECRETKEY");
             req.userData = decoded;
             next();
         }

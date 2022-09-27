@@ -5,19 +5,16 @@ const jwt = require('jsonwebtoken');
 const uuid = require('uuid');
 
 const db = require('../db/db');
-
-const controller = require('../controller/userController');
 const userController = require('../controller/userController');
 
 //Sign-up
-router.post('/sign-up', controller.validateRegister, (req, res, next) => {
-    db.query(
-        `SELEST id FROM users WHERE LOWER(username) = LOWER(${req.body.username})`, 
-        (err, result) => {
+router.post('/sign-up', userController.validateRegister, (req, res) => {
+    let signUpQuery = `SELEST id FROM users WHERE LOWER(username) = LOWER(${req.body.username})`;
+    db.query(signUpQuery, (err, result) => {
         if(result && result.length){
             return res.status(409).json({
                 message: "This username is already using"
-            })
+            });
         }
         else{
             bcrypt.hash(req.body.password, 10, (err, hash) => {
@@ -27,9 +24,8 @@ router.post('/sign-up', controller.validateRegister, (req, res, next) => {
                     });
                 }
                 else{
-                    db.query(
-                        `INSERT INTO users (id, username, password, registerd) VALUES ('${uuid.v4()}', ${db.escape(req.body.username)}, '${hash}', now());`, 
-                        (err, result) => {
+                    let insertQuery = `INSERT INTO users (id, username, password, registerd) VALUES ('${uuid.v4()}', ${db.escape(req.body.username)}, '${hash}', now());`;
+                    db.query(insertQuery, (err, result) => {
                         if(!err){
                             return res.status(200).json({message: "Student Registerd"});
                         }
@@ -45,13 +41,18 @@ router.post('/sign-up', controller.validateRegister, (req, res, next) => {
 
 
 //login
-router.post('/login', (req, res, next) => {
-    db.query(
-        `SELECT * FROM users WHERE username = ${db.escape(req.body.username)};`,
-        (err, result) => {
+router.post('/login', (req, res) => {
+    let logInQuery = `SELECT * FROM users WHERE username = ${db.escape(req.body.username)};`;
+    
+    db.query(logInQuery, (err, result) => {
             if(err){
                 return res.status(400).json({
                     message: "Username or Password incorrect"
+                });
+            }
+            if(!result.length){
+                return res.status(400).send({
+                    message: "Username or Password incorrect!"
                 });
             }
             bcrypt.compare(req.body.password,
@@ -71,9 +72,10 @@ router.post('/login', (req, res, next) => {
                             "SECRETKEY",
                             {expiresIn: "7d"}
                         );
-                        db.query(
-                            `UPDATE users SET last_login = now() WHERE id = ${result[0].id};`
-                        );
+
+                        /* let updateLastLogin = `UPDATE users SET last_login = now() WHERE id = ${result[0].id};`;
+                        db.query(updateLastLogin); */
+
                         return res.status(200).json({
                             message: "LoggedIn", tocken, user: result[0]
                         });
@@ -87,7 +89,7 @@ router.post('/login', (req, res, next) => {
 });
 
 //authetication
-router.get('/secret', userController.isLoggedIn, (req, res, next) => {
+router.get('/secret', userController.isLoggedIn, (req, res) => {
     console.log(req.userData);
     res.send("This is authentication!")
 });
